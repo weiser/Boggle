@@ -24,7 +24,7 @@ public class BoggleScorerTest extends TestCase {
     }
     Assert.assertEquals(25, dictionary.size());
 
-    BoggleBoard boggleBoard = boardFilledWithAs();
+    BoggleBoard boggleBoard = boardFilledWithAs(5,5);
 
     BoggleScorer scorer = new BoggleScorer(dictionary, boggleBoard);
     scorer.score();
@@ -32,8 +32,8 @@ public class BoggleScorerTest extends TestCase {
 
   }
 
-  private BoggleBoard boardFilledWithAs() {
-    BoggleBoard boggleBoard = new BoggleBoard(5, 5);
+  private BoggleBoard boardFilledWithAs(int width, int height) {
+    BoggleBoard boggleBoard = new BoggleBoard(width, height);
     for (int ii = 0; ii < boggleBoard.getWidth(); ii++) {
       for (int jj = 0; jj < boggleBoard.getLength(); jj++) {
         boggleBoard.setPosition(ii, jj, "a");
@@ -64,9 +64,13 @@ public class BoggleScorerTest extends TestCase {
    */
   public void testDirections(){
     
-    BoggleState state = new BoggleState(0,0, "a");
+    boolean[][] visitedSquares = new boolean[5][5]; 
     
-    BoggleScorer scorer  = new BoggleScorer(new ArrayList<String>(), boardFilledWithAs());
+    clearVisited(visitedSquares);
+    
+    BoggleState state = new BoggleState("a",0,0, "a");
+    
+    BoggleScorer scorer  = new BoggleScorer(new ArrayList<String>(), boardFilledWithAs(5,5));
     
     Assert.assertEquals(1, scorer.goRight(state).getPosx());
     Assert.assertEquals(0, scorer.goRight(state).getPosy());
@@ -92,6 +96,15 @@ public class BoggleScorerTest extends TestCase {
     Assert.assertEquals(null, scorer.goRightDown(state));
     Assert.assertEquals(null, scorer.goRightDown(state));
     
+    
+  }
+
+  private void clearVisited(boolean[][] visitedSquares) {
+    for(int ii = 0; ii < visitedSquares.length; ii++){
+      for(int jj = 0; jj < visitedSquares[ii].length; jj++){
+        visitedSquares[ii][jj] = false;
+      }
+    }
     
   }
 
