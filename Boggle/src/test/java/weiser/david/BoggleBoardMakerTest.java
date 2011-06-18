@@ -65,7 +65,7 @@ public class BoggleBoardMakerTest extends TestCase {
     Assert.assertEquals(4, bmm.calcXCoord(intAddress));
     Assert.assertEquals(4, bmm.calcYCoord(intAddress));
     
-    Assert.assertEquals(0, bmm.calcIntegerAddress(0, 0));
+    Assert.assertEquals(Integer.MAX_VALUE, bmm.calcIntegerAddress(0, 0));
     Assert.assertEquals(0, bmm.calcXCoord(0));
     Assert.assertEquals(0, bmm.calcYCoord(0));
     

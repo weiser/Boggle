@@ -1,0 +1,16 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Default Project
+[INFO]    task-segment: [test]
+[INFO] ------------------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Cannot execute mojo: resources. It requires a project with an existing pom.xml, but the build is not using one.
+[INFO] ------------------------------------------------------------------------
+[INFO] For more information, run Maven with the -e switch
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: < 1 second
+[INFO] Finished at: Fri Jun 17 22:39:21 PDT 2011
+[INFO] Final Memory: 3M/57M
+[INFO] ------------------------------------------------------------------------

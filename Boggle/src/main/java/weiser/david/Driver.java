@@ -15,7 +15,11 @@ public class Driver {
   public static void main(String[] args){
     List<String> dictionary = new ArrayList<String>();
 
+    if(args.length < 2)
     Driver.initDictionary(dictionary, "src/main/resources/dict.txt");
+    else
+      Driver.initDictionary(dictionary, args[1]);
+   
     
     BoggleBoard maxBoard = null;
     int maxScore = -1;

@@ -1,21 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: weiser.david.BoggleBoardMakerTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 4.456 sec <<< FAILURE!
-testBoardMakerDoesBetterThanRandom(weiser.david.BoggleBoardMakerTest)  Time elapsed: 3.8 sec  <<< FAILURE!
-junit.framework.AssertionFailedError: scorerRandom.getScore() = 2 scorerPlanned.getScore() = 2 expected:<true> but was:<false>
-	at junit.framework.Assert.fail(Assert.java:47)
-	at junit.framework.Assert.failNotEquals(Assert.java:282)
-	at junit.framework.Assert.assertEquals(Assert.java:64)
-	at junit.framework.Assert.assertEquals(Assert.java:149)
-	at weiser.david.BoggleBoardMakerTest.testBoardMakerDoesBetterThanRandom(BoggleBoardMakerTest.java:47)
-
-testCoordinateConversion(weiser.david.BoggleBoardMakerTest)  Time elapsed: 0.002 sec  <<< FAILURE!
-junit.framework.AssertionFailedError: expected:<0> but was:<2147483647>
-	at junit.framework.Assert.fail(Assert.java:47)
-	at junit.framework.Assert.failNotEquals(Assert.java:282)
-	at junit.framework.Assert.assertEquals(Assert.java:64)
-	at junit.framework.Assert.assertEquals(Assert.java:201)
-	at junit.framework.Assert.assertEquals(Assert.java:207)
-	at weiser.david.BoggleBoardMakerTest.testCoordinateConversion(BoggleBoardMakerTest.java:68)
-
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.913 sec
