@@ -1,5 +1,6 @@
 package weiser.david;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,7 +15,7 @@ import java.util.Stack;
  */
 public class BoggleScorer {
 
-  private HashMap<String, String> dictionary;
+  private List<String> dictionary;
   private BoggleBoard board;
   private HashMap<String, String> foundWords;
   private boolean[][] visited;
@@ -29,15 +30,14 @@ public class BoggleScorer {
    *          - a 5x5 array. Each entry is a single letter.
    */
   public BoggleScorer(List<String> dictionary, BoggleBoard boggleBoard) {
-    this.dictionary = new HashMap<String, String>();
+    this.dictionary = new ArrayList<String>();
     for (String entry : dictionary) {
-      this.dictionary.put(entry, "");
+      this.dictionary.add(entry);
     }
     this.board = boggleBoard;
     this.foundWords = new HashMap<String, String>();
     this.score = 0;
 
-    
   }
 
   public int getScore() {
@@ -51,14 +51,11 @@ public class BoggleScorer {
    */
   public void score() {
 
-    for (String entry : this.dictionary.keySet()) {
+    for (String entry : this.dictionary) {
       for (int ii = 0; ii < 5; ii++) {
         for (int jj = 0; jj < 5; jj++) {
-          System.out.println("finding at: (" + ii + "," + jj + ")");
           if (!foundWords.containsKey(entry) && findWordAt(entry, ii, jj)) {
-            System.out.println("  Found: " + entry);
             foundWords.put(entry, "");
-
           }
         }
       }
@@ -66,7 +63,6 @@ public class BoggleScorer {
 
   }
 
-  
   /**
    * This method finds a word, entry, starting at (x, y). It returns true if
    * entry was found starting at (x,y) and false otherwise.
@@ -87,6 +83,9 @@ public class BoggleScorer {
     Queue<BoggleState> queue = new PriorityQueue<BoggleState>(10,
         new BoggleEntryComparator<BoggleState>());
 
+    if(this.board.getLetterAt(x, y) == null){
+      throw new NullPointerException("("+x+","+y+") is null");
+    }
     BoggleState initState = new BoggleState(entry, x, y, this.board
         .getLetterAt(x, y));
 
@@ -241,7 +240,8 @@ public class BoggleScorer {
       int nextY) {
 
     // this constructor will mark that (nextX,nextY) has been visited.
-    return new BoggleState(curState.getSoughtWord(),nextX, nextY, curState.getWord()
+    return new BoggleState(curState.getSoughtWord(), nextX, nextY, curState
+        .getWord()
         + this.board.getLetterAt(nextX, nextY));
 
   }
