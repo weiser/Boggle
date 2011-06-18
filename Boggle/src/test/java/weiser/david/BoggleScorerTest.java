@@ -1,5 +1,11 @@
 package weiser.david;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +35,31 @@ public class BoggleScorerTest extends TestCase {
     BoggleScorer scorer = new BoggleScorer(dictionary, boggleBoard);
     scorer.score();
     Assert.assertEquals(210, scorer.getScore());
+  }
+  
+  public void testMaxScoreOnPlannedBoard(){
+    
+    List<String> dictionary = new ArrayList<String>();
+    initDictionary(dictionary, "src/test/resources/dict.txt");
+    
+    BoggleBoardMaker plannedBoardMaker = new BoggleBoardMaker(new BoggleBoard(
+        5, 5), dictionary);
+    plannedBoardMaker.plan();
+
+    BoggleScorer scorer = new BoggleScorer(plannedBoardMaker.getWordsPlaced(), plannedBoardMaker
+        .getBoard());
+    
+    scorer.score();
+    String scorerFoundWords = "";
+    for(String entry: scorer.getFoundWords().keySet()){
+      scorerFoundWords+= entry+ ",";
+    }
+    
+    String plannerWords = "";
+    for(String entry: plannedBoardMaker.getWordsPlaced()){
+      plannerWords += entry + ",";
+    }
+    Assert.assertEquals("Found: "+scorerFoundWords+", wanted: "+plannerWords, true, scorer.getFoundWords().keySet().containsAll(plannedBoardMaker.getWordsPlaced()));
 
   }
 
@@ -106,6 +137,26 @@ public class BoggleScorerTest extends TestCase {
       }
     }
     
+  }
+  private void initDictionary(List<String> dictionary, String filename) {
+    // open the file specified by file name and feed it, line by line, into the
+    // dictionary.
+    try {
+      FileInputStream fis = new FileInputStream(filename);
+      DataInputStream dis = new DataInputStream(fis);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(dis));
+      String line;
+      while ((line = reader.readLine()) != null) {
+        dictionary.add(line.toLowerCase());
+      }
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
   }
 
 }

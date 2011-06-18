@@ -18,7 +18,6 @@ public class BoggleScorer {
   private List<String> dictionary;
   private BoggleBoard board;
   private HashMap<String, String> foundWords;
-  private boolean[][] visited;
   private int score;
 
   /**
@@ -74,34 +73,35 @@ public class BoggleScorer {
    */
   private boolean findWordAt(String entry, int x, int y) {
     // Since Java isn't a huge fan of recursion, we're going to simulate
-    // recursion with a stack.
-
-    // Stack<BoggleState> stack = new Stack<BoggleState>();
+    // recursion with a queue.
 
     // let's use a priority queue which is based on how close a the prefix
     // represented by a BoggleState is to the entry we're looking for.
-    Queue<BoggleState> queue = new PriorityQueue<BoggleState>(10,
-        new BoggleEntryComparator<BoggleState>());
+    //Queue<BoggleState> queue = new PriorityQueue<BoggleState>(10000,
+    //    new BoggleEntryComparator<BoggleState>());
+    
+    Stack<BoggleState> stack = new Stack<BoggleState>();
 
-    if(this.board.getLetterAt(x, y) == null){
-      throw new NullPointerException("("+x+","+y+") is null");
+    if (this.board.getLetterAt(x, y) == null) {
+      throw new NullPointerException("(" + x + "," + y + ") is null");
     }
     BoggleState initState = new BoggleState(entry, x, y, this.board
         .getLetterAt(x, y));
 
-    // stack.push(initState);
-    queue.add(initState);
+    //queue.add(initState);
 
-    while (!queue.isEmpty()) {// !stack.isEmpty()) {
-      BoggleState curState = queue.poll();// stack.pop();
+    stack.push(initState);
+    while (!stack.isEmpty()){//!queue.isEmpty()) {
+      BoggleState curState = stack.pop();//queue.poll();
 
       if (curState == null)
         continue;
 
+      //System.out.println("curState word: " + curState.getWord());
       // if the word represented in curState is in the dictionary and it
       // hasn't been found yet, update the score
 
-      if (entry.equals(curState.getWord())) {
+      if (entry.equals(curState.getWord()) && entry.length() >= 3) {
         int wordScore = scoreWord(curState.getWord());
         this.score += wordScore;
         return true;
@@ -112,19 +112,19 @@ public class BoggleScorer {
           // already
           // been visited, the go*(curState) method will return null
           try {
-            queue.add(goUp(curState));
-            queue.add(goDown(curState));
-            queue.add(goLeft(curState));
-            queue.add(goRight(curState));
-            queue.add(goLeftUp(curState));
-            queue.add(goLeftDown(curState));
-            queue.add(goRightUp(curState));
-            queue.add(goRightDown(curState));
+            
+            stack.push(goUp(curState));
+            stack.push(goDown(curState));
+            stack.push(goLeft(curState));
+            stack.push(goRight(curState));
+            stack.push(goLeftUp(curState));
+            stack.push(goLeftDown(curState));
+            stack.push(goRightUp(curState));
+            stack.push(goRightDown(curState));
           } catch (NullPointerException npe) {
             // if we caught this, the next state was null. we can ignore this.
           }
-        } else
-          return false;
+        } 
       }
     }
     return false;
@@ -162,87 +162,15 @@ public class BoggleScorer {
     return scoreVal;
   }
 
-  public String letterFromRightDown(int x, int y) {
-
-    int nextX = x + 1;
-    int nextY = y - 1;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
-
-  public String letterFromRightUp(int x, int y) {
-    int nextX = y + 1;
-    int nextY = y + 1;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
-
-  public String letterFromLeftDown(int x, int y) {
-    int nextX = x - 1;
-    int nextY = y - 1;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
-
-  public String letterFromLeftUp(int x, int y) {
-    // TODO Auto-generated method stub
-    int nextX = x - 1;
-    int nextY = y + 1;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
-
-  public String letterFromRight(int x, int y) {
-    int nextX = x + 1;
-    int nextY = y;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
-
-  public String letterFromLeft(int x, int y) {
-    int nextX = x - 1;
-    int nextY = y;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
-
-  public String letterFromDown(int x, int y) {
-    int nextX = x;
-    int nextY = y - 1;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
-
-  public String letterFromUp(int x, int y) {
-    int nextX = x;
-    int nextY = y + 1;
-    if (nextX < 0 || nextY < 0 || nextX >= this.board.getWidth()
-        || nextY >= this.board.getLength())
-      return null;
-    return this.board.getLetterAt(nextX, nextY);
-  }
 
   private BoggleState makeNewBoggleState(BoggleState curState, int nextX,
       int nextY) {
 
-    // this constructor will mark that (nextX,nextY) has been visited.
-    return new BoggleState(curState.getSoughtWord(), nextX, nextY, curState
-        .getWord()
-        + this.board.getLetterAt(nextX, nextY));
+     BoggleState bs =new BoggleState(curState.getSoughtWord(), nextX, nextY, curState
+         .getWord()
+         + this.board.getLetterAt(nextX, nextY));
+     //System.out.println("new state: "+bs.toString());
+    return bs;
 
   }
 
@@ -320,4 +248,11 @@ public class BoggleScorer {
     return makeNewBoggleState(curState, nextX, nextY);
   }
 
+  public HashMap<String, String> getFoundWords() {
+    return foundWords;
+  }
+
+  public void setFoundWords(HashMap<String, String> foundWords) {
+    this.foundWords = foundWords;
+  }
 }

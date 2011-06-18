@@ -90,7 +90,7 @@ public class BoggleBoardMaker {
       visitedSpaces.add(calcIntegerAddress(posx, posy));
       this.board.setPosition(posx, posy, String.valueOf(word
           .charAt(letterIndex)));
-      System.out.println("Inserted: "+word.charAt(letterIndex)+"\n"+this.board.toString());
+      //System.out.println("Inserted: "+word.charAt(letterIndex)+"\n"+this.board.toString());
     }
 
     letterIndex++;
@@ -101,8 +101,8 @@ public class BoggleBoardMaker {
 
     while (moreMoves) {
       if (letterIndex >= word.length()) {
-        System.out.println("placed: " + word +" board looks like: ");
-        System.out.println(this.board.toString());
+        //System.out.println("placed: " + word +" board looks like: ");
+        //System.out.println(this.board.toString());
         return true;
       }
       // if the next letter of the word is next to where we're starting at, and
@@ -131,7 +131,7 @@ public class BoggleBoardMaker {
 
         this.board.setPosition(posx, posy, String.valueOf(word
             .charAt(letterIndex)));
-        System.out.println("Inserted: "+word.charAt(letterIndex)+"\n"+this.board.toString());
+        //System.out.println("Inserted: "+word.charAt(letterIndex)+"\n"+this.board.toString());
         letterIndex++;
         continue;
       }
@@ -152,9 +152,9 @@ public class BoggleBoardMaker {
         posx = calcXCoord(integerAddress);
         posy = calcYCoord(integerAddress);
         String removed = this.board.getLetterAt(posx, posy);
-        System.out.println("Remove ("+word+") before: "+removed+"\n"+this.board.toString());
+        //System.out.println("Remove ("+word+") before: "+removed+"\n"+this.board.toString());
         this.board.setPosition(posx, posy, null);
-        System.out.println("After remove: "+removed+"\n"+this.board.toString());
+        //System.out.println("After remove: "+removed+"\n"+this.board.toString());
       }
     }
 
